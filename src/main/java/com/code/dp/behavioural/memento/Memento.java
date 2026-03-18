@@ -9,69 +9,85 @@ import java.util.List;
  * @author Rahul Potghan
  * @implNote This Memento Pattern is partially completed,
  * because to work this code we need to access the Originator through Memento object.
- * I am still working on it, to make it complete. So through single object we can access originator and perform save and undo operation.
- * For now, I have only implemented save and undo, still working on redo.
+ * I am still working on it, to make it complete. So through single object we can directly perform save, undo and redo operations.
  */
 public class Memento<T extends Cloneable> {
 
     private final Caretaker<T> caretaker;
-    private T t;
+    private T originator;
 
-    public Memento(T t) {
-        this.t = t;
+    public Memento(T originator) {
+        this.originator = originator;
         this.caretaker = new Caretaker<>();
         this.save();
     }
 
+    public T get() {
+        return originator;
+    }
+
     public void save() {
-        if (!t.equals(caretaker.getStates().getLast())) {
-            this.caretaker.push(t);
-            try {
-                this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
+        if (caretaker.getStates().isEmpty() || !originator.equals(caretaker.getStates().getLast())) {
+            this.caretaker.push(originator);
+            cloneOriginator();
         }
     }
 
-    public void save(T t) {
-        if (!t.equals(caretaker.getStates().getLast())) {
-            try {
-                this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-            this.caretaker.push(t);
+    public void save(T originator) {
+        if (!originator.equals(caretaker.getStates().getLast())) {
+            cloneOriginator();
+            this.caretaker.push(originator);
         }
     }
 
     public void undo() {
-        this.t = caretaker.pop();
+        this.originator = caretaker.pop();
+        cloneOriginator();
     }
 
-    public T get() {
-        return t;
+    public void redo() {
+        this.originator = caretaker.redo();
+        cloneOriginator();
+    }
+
+    private void cloneOriginator() {
+        try {
+            this.originator = (T) this.originator.getClass().getMethod("clone").invoke(this.originator);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static class Caretaker<T> {
         private final List<T> states;
+        private final List<T> undoState;
 
         private Caretaker() {
             states = new ArrayList<>();
+            undoState = new ArrayList<>();
         }
 
         public List<T> getStates() {
             return states;
         }
 
-        private void push(T t) {
-            states.add(t);
+        private void push(T originator) {
+            states.add(originator);
+            if(!this.undoState.isEmpty()) {
+                this.undoState.clear();
+            }
         }
 
         private T pop() {
             if (states.size() > 1) {
-                states.removeLast();
+                undoState.add(states.removeLast());
             }
+            return states.getLast();
+        }
+
+        private T redo() {
+            if(!undoState.isEmpty())
+                states.add(undoState.removeLast());
             return states.getLast();
         }
     }

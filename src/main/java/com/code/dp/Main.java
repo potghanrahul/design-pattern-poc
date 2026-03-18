@@ -25,5 +25,15 @@ public class Main {
 
         memento.undo();
         System.out.println("originator = " + memento.get());
+
+        memento.redo();
+        System.out.println("originator = " + memento.get());
+
+        memento.redo();
+        System.out.println("originator = " + memento.get());
+
+        memento.redo();
+        System.out.println("originator = " + memento.get());
+
     }
 }
