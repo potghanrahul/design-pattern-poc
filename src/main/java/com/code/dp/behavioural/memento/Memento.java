@@ -10,6 +10,7 @@ import java.util.List;
  * @implNote This Memento Pattern is partially completed,
  * because to work this code we need to access the Originator through Memento object.
  * I am still working on it, to make it complete. So through single object we can access originator and perform save and undo operation.
+ * For now, I have only implemented save and undo, still working on redo.
  */
 public class Memento<T extends Cloneable> {
 
