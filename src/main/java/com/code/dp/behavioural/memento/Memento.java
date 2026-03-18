@@ -60,11 +60,11 @@ public class Memento<T extends Cloneable> {
 
     public static class Caretaker<T> {
         private final List<T> states;
-        private final List<T> undoState;
+        private final List<T> undoStates;
 
         private Caretaker() {
             states = new ArrayList<>();
-            undoState = new ArrayList<>();
+            undoStates = new ArrayList<>();
         }
 
         public List<T> getStates() {
@@ -73,21 +73,21 @@ public class Memento<T extends Cloneable> {
 
         private void push(T originator) {
             states.add(originator);
-            if(!this.undoState.isEmpty()) {
-                this.undoState.clear();
+            if(!this.undoStates.isEmpty()) {
+                this.undoStates.clear();
             }
         }
 
         private T pop() {
             if (states.size() > 1) {
-                undoState.add(states.removeLast());
+                undoStates.add(states.removeLast());
             }
             return states.getLast();
         }
 
         private T redo() {
-            if(!undoState.isEmpty())
-                states.add(undoState.removeLast());
+            if(!undoStates.isEmpty())
+                states.add(undoStates.removeLast());
             return states.getLast();
         }
     }

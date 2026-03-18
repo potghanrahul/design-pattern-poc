@@ -12,4 +12,5 @@
 
 * Behavior Patterns are about the interaction and communication of this objects.
   > #### *Memento Pattern*
-    1. Memento pattern for implementing a undo and redo mechanism.
+    1. Memento pattern for implementing an undo and redo mechanism. <br/>
+![Alt Text](images/memento.png)
