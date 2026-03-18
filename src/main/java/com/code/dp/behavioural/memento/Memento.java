@@ -73,7 +73,7 @@ public class Memento<T extends Cloneable> {
 
         private void push(T originator) {
             states.add(originator);
-            if(!this.undoStates.isEmpty()) {
+            if (!this.undoStates.isEmpty()) {
                 this.undoStates.clear();
             }
         }
@@ -86,7 +86,7 @@ public class Memento<T extends Cloneable> {
         }
 
         private T redo() {
-            if(!undoStates.isEmpty())
+            if (!undoStates.isEmpty())
                 states.add(undoStates.removeLast());
             return states.getLast();
         }
