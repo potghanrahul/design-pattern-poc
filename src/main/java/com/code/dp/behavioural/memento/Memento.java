@@ -4,10 +4,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @param <T>
+ * @author Rahul Potghan
+ * @implNote This Memento Pattern is partially completed,
+ * because to work this code we need to access the Originator through Memento object.
+ * I am still working on it, to make it complete. So through single object we can access originator and perform save and undo operation.
+ */
 public class Memento<T extends Cloneable> {
 
-    private T t;
     private final Caretaker<T> caretaker;
+    private T t;
 
     public Memento(T t) {
         this.t = t;
@@ -16,21 +23,25 @@ public class Memento<T extends Cloneable> {
     }
 
     public void save() {
-        this.caretaker.push(t);
-        try {
-            this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+        if (!t.equals(caretaker.getStates().getLast())) {
+            this.caretaker.push(t);
+            try {
+                this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void save(T t) {
-        try {
-            this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+        if (!t.equals(caretaker.getStates().getLast())) {
+            try {
+                this.t = (T) this.t.getClass().getMethod("clone").invoke(this.t);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+            this.caretaker.push(t);
         }
-        this.caretaker.push(t);
     }
 
     public void undo() {
@@ -48,12 +59,16 @@ public class Memento<T extends Cloneable> {
             states = new ArrayList<>();
         }
 
+        public List<T> getStates() {
+            return states;
+        }
+
         private void push(T t) {
             states.add(t);
         }
 
         private T pop() {
-            if(states.size()>1) {
+            if (states.size() > 1) {
                 states.removeLast();
             }
             return states.getLast();

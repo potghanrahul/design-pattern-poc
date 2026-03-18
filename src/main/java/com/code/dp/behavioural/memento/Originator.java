@@ -1,6 +1,8 @@
 package com.code.dp.behavioural.memento;
 
-public class Originator implements Cloneable{
+import java.util.Objects;
+
+public class Originator implements Cloneable {
     private String name;
     private String type;
     private Integer size;
@@ -48,11 +50,21 @@ public class Originator implements Cloneable{
     @Override
     public Originator clone() {
         try {
-            Originator clone = (Originator) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
+            return (Originator) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Originator that = (Originator) o;
+        return Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(size, that.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, size);
     }
 }

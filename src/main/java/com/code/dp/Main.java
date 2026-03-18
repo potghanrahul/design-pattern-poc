@@ -1,7 +1,7 @@
 package com.code.dp;
 
-import com.code.dp.behavioural.memento.Originator;
 import com.code.dp.behavioural.memento.Memento;
+import com.code.dp.behavioural.memento.Originator;
 
 public class Main {
 
