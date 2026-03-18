@@ -10,6 +10,6 @@
 
 > ### *Behavioural*
 
-* Behavior Patterns are about the interction and communication of this objects.
+* Behavior Patterns are about the interaction and communication of this objects.
   > #### *Memento Pattern*
     1. Memento pattern for implementing a undo and redo mechanism.
