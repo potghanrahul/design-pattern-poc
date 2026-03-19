@@ -31,13 +31,13 @@ public class Main {
 
     private static void statePatternCall() {
         List<Perform> performs = Arrays.asList(
-                new Perform<>(new Addition<>(), 10, 20),
-                new Perform<>(new Subtraction<>(), 10F, 20F),
-                new Perform<>(new Multiplication<>(), 10.1, 20.1),
-                new Perform<>(new Division<>(), 10L, 20L)
+                new Perform<>(new Addition<>()),
+                new Perform<>(new Subtraction<>()),
+                new Perform<>(new Multiplication<>()),
+                new Perform<>(new Division<>())
         );
         for (Perform p : performs) {
-            System.out.println("p = " + p.doPerform());
+            System.out.println("p = " + p.doPerform(10, 20));
         }
     }
 
