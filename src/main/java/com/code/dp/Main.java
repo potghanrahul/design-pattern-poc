@@ -7,6 +7,10 @@ import com.code.dp.behavioural.memento.Originator;
 import com.code.dp.behavioural.state.*;
 import com.code.dp.behavioural.strategy.BubbleSort;
 import com.code.dp.behavioural.strategy.SortCollection;
+import com.code.dp.behavioural.template.AuditRecord;
+import com.code.dp.behavioural.template.GenerateReportTask;
+import com.code.dp.behavioural.template.Task;
+import com.code.dp.behavioural.template.TransferMoneyTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +24,15 @@ public class Main {
 //        statePatternCall();
 //        iteratorPatternCall();
 //        strategyPattern();
+//        templatePatternCall();
+    }
 
+    private static void templatePatternCall() {
+        AuditRecord auditRecord = new AuditRecord();
+        Task task1 = new TransferMoneyTask(auditRecord);
+        Task task2 = new GenerateReportTask(auditRecord);
+        task1.execute();
+        task2.execute();
     }
 
     private static void strategyPattern() {
