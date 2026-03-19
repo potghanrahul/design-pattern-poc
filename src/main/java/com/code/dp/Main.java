@@ -1,5 +1,7 @@
 package com.code.dp;
 
+import com.code.dp.behavioural.iterator.History;
+import com.code.dp.behavioural.iterator.Iterator;
 import com.code.dp.behavioural.memento.Memento;
 import com.code.dp.behavioural.memento.Originator;
 import com.code.dp.behavioural.state.*;
@@ -11,7 +13,20 @@ public class Main {
 
     public static void main(String[] args) {
 //        mementoPatternCall();
-        statePatternCall();
+//        statePatternCall();
+//        iteratorPatternCall();
+    }
+
+    private static void iteratorPatternCall() {
+        History<String> history = new History<>();
+        history.push("A");
+        history.push("B");
+        history.push("C");
+        Iterator<String> iterator = history.createIterator();
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            System.out.println("item = " + item);
+        }
     }
 
     private static void statePatternCall() {
